@@ -20,9 +20,9 @@ class CardProductos extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           children: [
             _fondoCard(producto.imagen),
-            _cardDetalles(),
-            Positioned(top: 0, right: 0, child: _precio()),
-            Positioned(top: 0, left: 0, child: _EstaDisponible())
+            _cardDetalles(producto.nombre, producto.id),
+            Positioned(top: 0, right: 0, child: _precio(producto.precio)),
+            if(producto.disponible)Positioned(top: 0, left: 0, child: _EstaDisponible())
           ],
         ),
       ),
@@ -60,6 +60,9 @@ class _EstaDisponible extends StatelessWidget {
 }
 
 class _precio extends StatelessWidget {
+  final String? precios;
+
+  const _precio(this.precios);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,7 +72,7 @@ class _precio extends StatelessWidget {
         fit: BoxFit.contain,
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Text('\$100.00',
+            child: Text('\$$precios',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),
       ),
       alignment: Alignment.center,
@@ -82,6 +85,11 @@ class _precio extends StatelessWidget {
 }
 
 class _cardDetalles extends StatelessWidget {
+  final String? titulo;
+  final String? id;
+
+  const _cardDetalles(this.titulo, this.id) ;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -95,11 +103,11 @@ class _cardDetalles extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "NOMBRE",
+              "$titulo",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
-              "SUBTITULO",
+              "MODELO $id",
               style: TextStyle(fontSize: 12),
             )
           ],
@@ -127,7 +135,9 @@ class _fondoCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 400,
-        child: FadeInImage(
+        child: urlImg == null
+        ? Image(image: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"), fit: BoxFit.cover) 
+        :FadeInImage(
           placeholder: NetworkImage(
               "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"),
           image: NetworkImage(urlImg!),

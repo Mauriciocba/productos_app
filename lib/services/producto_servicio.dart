@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:productos_app/models/models.dart';
 import 'package:http/http.dart' as http;
 
-
 class ProductoServicio extends ChangeNotifier {
   final String _url = 'flutterbase-9808e-default-rtdb.firebaseio.com';
   final List<ProductosDos> productosArray = [];
+  late ProductosDos? productoSelecionado;
 
   bool cargando = true;
 
@@ -30,7 +30,7 @@ class ProductoServicio extends ChangeNotifier {
     });
 
     // cargando = false;
-    //  notifyListeners();
+    notifyListeners();
     print(productosArray);
     return this.productosArray;
   }

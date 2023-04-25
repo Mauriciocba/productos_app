@@ -37,12 +37,12 @@ class ProductosDos {
         "precio": precio,
     };
 
-    /*Product copy() => Product(
-      available: this.available,
-      name: this.name,
-      picture: this.picture,
-      price: this.price,
+    ProductosDos copy() => ProductosDos(
+      disponible: this.disponible,
+      nombre: this.nombre,
+      imagen: this.imagen,
+      precio: this.precio,
       id: this.id,
-    );*/
+    );
 
 }
