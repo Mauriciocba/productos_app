@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:productos_app/services/producto_servicio.dart';
+import 'package:productos_app/widgets/mensaje.dart';
 import 'package:provider/provider.dart';
 import '../providers/productos_form.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'screens.dart';
 
 class ListaProductos extends StatelessWidget {
   const ListaProductos({Key? key}) : super(key: key);
@@ -31,6 +34,7 @@ class productosNuevos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final llave = GlobalKey<ScaffoldState>();
     final claseProductos = Provider.of<ProductosProviderClase>(context);
     return Scaffold(
       appBar: AppBar(
@@ -91,7 +95,16 @@ class productosNuevos extends StatelessWidget {
         child: Icon(Icons.save_alt),
         backgroundColor: Color.fromARGB(255, 228, 86, 43),
         onPressed: () async {
-          if (!claseProductos.esValido()) return;
+          if (!claseProductos.esValido()) {
+            return;
+          } else {
+            LoadingScreen();
+            Navigator.of(context).pop();
+          }
+
+          final String? urlImagen = await prodServicio.actualizarImagen();
+
+          if (urlImagen != null) claseProductos.productoDos!.imagen = urlImagen;
 
           await prodServicio.actualizaOCrea(claseProductos.productoDos!);
         },
@@ -110,7 +123,7 @@ class _ProductoForm extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Container(
         width: double.infinity,
-        height: 200,
+        height: 250,
         child: Form(
             key: traeNombreProducto.formKey,
             child: Column(
@@ -183,11 +196,11 @@ class _ImagenProducto extends StatelessWidget {
   }
 
   Widget ImagenesOpciones(String? imagenes) {
-    if (imagenes == null) {
+    if (imagenes == '') {
       return Image(image: AssetImage('assets/no-image.png'), fit: BoxFit.cover);
     }
 
-    if (imagenes.startsWith('http')) {
+    if (imagenes!.startsWith('http')) {
       return FadeInImage(
         placeholder: AssetImage('assets/jar-loading.gif'),
         image: NetworkImage(this.url!),

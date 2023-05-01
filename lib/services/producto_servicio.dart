@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class ProductoServicio extends ChangeNotifier {
   }
 //
   Future<List<ProductosDos>> cargarProductos() async {
-    // cargando = true;
-    //notifyListeners();
+     cargando = true;
+    notifyListeners();
 
     final url = Uri.https(_url, 'productos.json');
     final respuesta = await http.get(url);
@@ -32,7 +33,7 @@ class ProductoServicio extends ChangeNotifier {
       this.productosArray.add(productoTempo);
     });
 
-    // cargando = false;
+    cargando = false;
     notifyListeners();
     print(productosArray);
     return this.productosArray;
@@ -40,6 +41,7 @@ class ProductoServicio extends ChangeNotifier {
 
   //actualizar card
   Future actualizaOCrea(ProductosDos producto) async {
+    cargando = true;
     guardar = true;
     notifyListeners();
 
@@ -49,7 +51,8 @@ class ProductoServicio extends ChangeNotifier {
       //actualiza
       await actualizarProducto(producto);
     }
-
+    
+    cargando = false;
     guardar = false;
     notifyListeners();
   }
@@ -83,5 +86,36 @@ class ProductoServicio extends ChangeNotifier {
     nuevaImagen = File.fromUri(Uri(path: path));
 
     notifyListeners();
+  }
+
+  Future<String?> actualizarImagen() async {
+    if (nuevaImagen == null) return null;
+
+    this.guardar = true;
+    notifyListeners();
+
+    final url = Uri.parse(
+        "https://api.cloudinary.com/v1_1/dtma1lffp/image/upload?upload_preset=flutterProductos");
+
+    final imagenRespuesta = http.MultipartRequest('POST', url);
+
+    final archivo =
+        await http.MultipartFile.fromPath('file', nuevaImagen!.path);
+
+    imagenRespuesta.files.add(archivo);
+
+    final respuestaFinal = await imagenRespuesta.send();
+    final resp = await http.Response.fromStream(respuestaFinal);
+
+    if (resp.statusCode != 200 && resp.statusCode != 201) {
+      print("Algo salio mal");
+      print(resp.body);
+      return null;
+    }
+
+    nuevaImagen = null;
+
+    final respuestaJsonData = json.decode(resp.body);
+    return respuestaJsonData['secure_url'];
   }
 }
