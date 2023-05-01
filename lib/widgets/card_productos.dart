@@ -136,10 +136,9 @@ class _fondoCard extends StatelessWidget {
         width: double.infinity,
         height: 400,
         child: urlImg == null
-        ? Image(image: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"), fit: BoxFit.cover) 
+        ? Image(image: AssetImage('assets/no-image.png'), fit: BoxFit.cover) 
         :FadeInImage(
-          placeholder: NetworkImage(
-              "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"),
+          placeholder: AssetImage('assets/jar-loading.gif'),
           image: NetworkImage(urlImg!),
           fit: BoxFit.cover,
         ),

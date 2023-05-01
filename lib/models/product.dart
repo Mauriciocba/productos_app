@@ -6,14 +6,14 @@ import 'dart:convert';
 
 class ProductosDos {
     ProductosDos({
-       required this.disponible,
+    required this.disponible,
     required this.imagen,
     required this.nombre,
     required this.precio,
     this.id
     });
 
-    bool disponible;
+  bool disponible;
   String imagen;
   String nombre;
   String precio;

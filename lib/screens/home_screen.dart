@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productos_app/models/models.dart';
 import 'package:provider/provider.dart';
 import '../services/services.dart';
 import '../widgets/widgets.dart';
@@ -31,7 +32,14 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 228, 86, 43),
-        onPressed: () {},
+        onPressed: () {
+          traeProductos.productoSelecionado = new ProductosDos(
+              disponible: true,
+              nombre: "",
+              precio: '0',
+              imagen:'');
+          Navigator.pushNamed(context, 'productos');
+        },
         child: Icon(Icons.add),
       ),
     );
