@@ -63,7 +63,7 @@ class ProductoServicio extends ChangeNotifier {
     final data = respuesta.body;
 
     final index =
-        productosArray.indexWhere((element) => producto.id == producto.id);
+        productosArray.indexWhere((element) => element.id == producto.id);
     this.productosArray[index] = producto;
 
     return producto.id!;

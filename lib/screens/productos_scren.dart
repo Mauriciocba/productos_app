@@ -25,16 +25,17 @@ class ListaProductos extends StatelessWidget {
 }
 
 class productosNuevos extends StatelessWidget {
-  const productosNuevos({
+   productosNuevos({
     Key? key,
     required this.prodServicio,
   }) : super(key: key);
 
   final ProductoServicio prodServicio;
 
+  SnackBar mensaje = SnackBar(content: Mensaje());
+
   @override
   Widget build(BuildContext context) {
-    final llave = GlobalKey<ScaffoldState>();
     final claseProductos = Provider.of<ProductosProviderClase>(context);
     return Scaffold(
       appBar: AppBar(
@@ -100,6 +101,7 @@ class productosNuevos extends StatelessWidget {
           } else {
             LoadingScreen();
             Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(mensaje);
           }
 
           final String? urlImagen = await prodServicio.actualizarImagen();
