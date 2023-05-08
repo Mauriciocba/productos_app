@@ -136,7 +136,7 @@ class _LoginForm extends StatelessWidget {
                if(token == null){
                 Navigator.pushReplacementNamed(context, 'home');
                }else{
-                print(token);
+                Notificaciones.showSnackbar("Email ya se encuentra registrado");
                 loginForm.isLoading = false;
                }
               }
