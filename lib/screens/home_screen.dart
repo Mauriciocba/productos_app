@@ -9,12 +9,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final traeProductos = Provider.of<ProductoServicio>(context);
+    final traeAutentificacion = Provider.of<Autenticacion>(context, listen: false);
 
      if (traeProductos.cargando)return LoadingScreen();
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Productos"),
+        actions:[IconButton(
+          icon: Icon(Icons.sensor_door_outlined),
+          onPressed: () {
+          traeAutentificacion.desloguearse();
+          Navigator.pushReplacementNamed(context, 'login');
+        },
+        )],
         backgroundColor: Color.fromARGB(255, 228, 86, 43),
         centerTitle: true,
       ),

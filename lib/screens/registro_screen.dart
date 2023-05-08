@@ -7,7 +7,7 @@ import 'package:productos_app/widgets/widgets.dart';
 
 import '../services/services.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegistroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
 
                     SizedBox( height: 10 ),
-                    Text('Iniciar sesión', style: Theme.of(context).textTheme.headline4 ),
+                    Text('Crear cuenta', style: Theme.of(context).textTheme.headline4 ),
                     SizedBox( height: 30 ),
                     
                     ChangeNotifierProvider(
@@ -38,8 +38,8 @@ class LoginScreen extends StatelessWidget {
               ),
 
               SizedBox( height: 50 ),
-              TextButton(onPressed:() => Navigator.pushReplacementNamed(context, 'registro') 
-              , child: Text('Crear una nueva cuenta', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold ),
+               TextButton(onPressed:() => Navigator.pushReplacementNamed(context, 'login') 
+              , child: Text('Ya tengo cuenta', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold ),
               )),
               SizedBox( height: 50 ),
             ],
@@ -112,7 +112,7 @@ class _LoginForm extends StatelessWidget {
 
             MaterialButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              disabledColor: Colors.grey,
+              disabledColor: Color.fromARGB(255, 41, 41, 41),
               elevation: 0,
               color: Color.fromARGB(255, 228, 86, 43),
               child: Container(
@@ -126,17 +126,17 @@ class _LoginForm extends StatelessWidget {
               ),
               onPressed: loginForm.isLoading ? null : () async {
                 
-                               FocusScope.of(context).unfocus();
+                FocusScope.of(context).unfocus();
                 final autenticacion = Provider.of<Autenticacion>(context, listen: false);
                 if( !loginForm.isValidForm() ) return;
 
                 loginForm.isLoading = true;
 
-               final String? token = await autenticacion.login(loginForm.email, loginForm.password);
+               final String? token = await autenticacion.crearUsuario(loginForm.email, loginForm.password);
                if(token == null){
                 Navigator.pushReplacementNamed(context, 'home');
                }else{
-                Notificaciones.showSnackbar("Email o Contraseña Incorrectos");
+                print(token);
                 loginForm.isLoading = false;
                }
               }
